@@ -29,9 +29,13 @@ class VideoCamera(object):
         self.flipVert = flipVert
         self.flipHor = flipHor
 
-        atexit.register(self.close_camera)
+        atexit.register(self.camera.close)
 
         time.sleep(2.0)
+    
+    def __del__(self):
+        self.vs.stop()
+        self.camera.close()
     
     def start(self):
         # start the thread to read frames from the video stream
@@ -56,10 +60,6 @@ class VideoCamera(object):
             self.camera.close()
             return
 
-    def __del__(self):
-        self.vs.stop()
-        self.camera.close()
-
     def read(self):
         return self.frame
 
@@ -68,9 +68,6 @@ class VideoCamera(object):
 
     def restart(self):
         self.stopped = False
-  
-    def close_camera(self):
-        self.camera.close()
 
     def flip_vert(self, frame):
         #flip video vertically
