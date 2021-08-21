@@ -3,20 +3,64 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  background-color: green;
+  overflow: hidden;
+}
+
+.gridWrapper{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  width: 100vw;
+  height: 100vh;
+}
+
+.cameraInfo{
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  background-color: aqua;
+}
+
+.main {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  background-color: blueviolet;
 }
 
 .navbar {
-  overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  margin: auto;
-  background-color: black;
-  opacity:0.6;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  background-color: crimson;
 }
+
+.cameraInfo p {
+    color:linen;
+}
+
+img {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+	
+.camera-bg {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
 
 .navbar a {
   float: left;
@@ -37,18 +81,14 @@ body {
   color: white;
 }
 
-.main {
-  padding: 16px;
-  margin-bottom: 30px;
-}
 
-
-.camera-movement{ 
-  float: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
 }
 
 .lights-button{
@@ -60,54 +100,7 @@ i.fa {
   border-radius: 60px;
   box-shadow: 0px 0px 2px #888;
   padding: 0.5em 0.6em;
-  
 
-}
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 35%
-}
-
-button {
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-}
-	
-//CSS
-.camera-bg {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-
-  /* Preserve aspet ratio */
-  min-width: 100%;
-  min-height: 100%;
-
-    /* Full height */
-  height: 100%;
-
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: black;
 }
 
 
@@ -119,25 +112,33 @@ body {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
+<div class="gridWrapper">
 
-<div class="main" id="newpost">
-  <img  class="camera-bg" style=" height:80%; background-attachment: fixed;" id="bg" class="center" src="{{ url_for('video_feed') }}">
-  <!--<img  class="camera-bg" style="width: 100%; height:80%; background-attachment: fixed;" id="bg" class="center" src="https://www.psdbox.com/wp-content/uploads/2011/01/security-camera-photoshop-effect.jpg">-->
-     
-</div>
+  <div class="cameraInfo">
+    <p>framerate:{{framerate}}</p>
+    <p>iso:{{iso}}</p>
+    <p>shutter speed:{{shutter_speed}}</p>
+  </div>
 
-<div class="navbar">
+  <div class="main" id="newpost">
+    <img  class="camera-bg" style="background-attachment: fixed;" id="bg" class="center" src="{{ url_for('video_feed') }}">
+    <!--<img  class="camera-bg" style="width: 100%; height:80%; background-attachment: fixed;" id="bg" class="center" src="https://www.psdbox.com/wp-content/uploads/2011/01/security-camera-photoshop-effect.jpg">-->
+  </div>
 
+  <div class="navbar">
     <div class="ignoreCall">
-          <a id=decline class="but_def">
-              <button id="button" onclick="stopCmera()"> 
-                  <i style="background: red; color: white;" class="fa fa-times fa-2x" aria-hidden="true"></i>
-              </button>
-	      <button id="button" onclick="startCmera()"> 
-                  <i style="background: blue; color: white;" class="fa fa-times fa-2x" aria-hidden="true"></i>
-              </button>
-         </a>       
+      <a href="http://192.168.1.140:5000/set_night_mode">Night Mode</a>
+      <a href="http://192.168.1.140:5000/set_daytime_mode">Daytime Mode</a>
+      <a id=decline class="but_def">
+        <button id="button" onclick="stopCmera()"> 
+            <i style="background: red; color: white;" class="fa fa-times fa-2x" aria-hidden="true"></i>
+        </button>
+        <button id="button" onclick="startCmera()"> 
+              <i style="background: blue; color: white;" class="fa fa-times fa-2x" aria-hidden="true"></i>
+        </button>
+      </a>       
     </div>
+  </div>
 
 </div>
 

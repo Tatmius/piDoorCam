@@ -9,10 +9,12 @@ from threading import Thread
 
 
 class VideoCamera(object):
-    def __init__(self, resolution=(1280, 720), framerate=30, flipVert = False, flipHor = False, **kwargs):
+    def __init__(self, resolution=(1296, 972), framerate=30, iso=200, flipVert = False, flipHor = False, **kwargs):
         self.camera = PiCamera()
         self.camera.resolution = resolution
         self.camera.framerate = framerate
+        self.camera.iso = iso
+        self.camera.shutter_speed = 0
 
         for (arg, value) in kwargs.items():
           setattr(self.camera, arg, value)
@@ -87,4 +89,16 @@ class VideoCamera(object):
         frame = self.rotate(self.flip_hor(self.flip_vert(self.vs.read())))
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+    
+    def setNightMode(self):
+        self.camera.iso = 800
+        self.camera.exposure_mode = 'off'
+        self.camera.shutter_speed = 6000000
+        self.camera.framerate = 0.1
+        time.sleep(7)
 
+    def setDaytimeMode(self):
+        self.camera.iso = 200
+        self.camera.exposure_mode = 'off'
+        self.camera.shutter_speed = 0
+        self.camera.framerate = 30

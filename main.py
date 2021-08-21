@@ -8,7 +8,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', 
+        framerate=pi_camera.camera.framerate,
+        iso=pi_camera.camera.iso,
+        shutter_speed=pi_camera.camera.shutter_speed)
 
 def gen(camera):
     #get camera frame
@@ -20,6 +23,22 @@ def gen(camera):
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(pi_camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/set_daytime_mode')
+def setDaytimeMode():
+    pi_camera.setDaytimeMode()
+    return render_template('index.html', 
+        framerate=pi_camera.camera.framerate,
+        iso=pi_camera.camera.iso,
+        shutter_speed=pi_camera.camera.shutter_speed)
+
+@app.route('/set_night_mode')
+def setNightMode():
+    pi_camera.setNightMode()
+    return render_template('index.html', 
+        framerate=pi_camera.camera.framerate,
+        iso=pi_camera.camera.iso,
+        shutter_speed=pi_camera.camera.shutter_speed)
 
 if __name__ == '__main__':
 
