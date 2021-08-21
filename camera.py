@@ -1,16 +1,15 @@
 import cv2
 import time
 import numpy as np
+import atexit
 
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 from threading import Thread
 
-import atexit
-
 
 class VideoCamera(object):
-    def __init__(self, resolution=(1280, 720), framerate=32, flipVert = False, flipHor = False, **kwargs):
+    def __init__(self, resolution=(1280, 720), framerate=30, flipVert = False, flipHor = False, **kwargs):
         self.camera = PiCamera()
         self.camera.resolution = resolution
         self.camera.framerate = framerate
