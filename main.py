@@ -5,6 +5,7 @@
 # import the necessary packages
 from flask import Flask, render_template, Response, request
 from camera import VideoCamera
+from waitress import serve
 import time
 import threading
 import os
@@ -39,7 +40,7 @@ def video_feed():
 
 if __name__ == '__main__':
 
-    app.run(host='0.0.0.0', debug=False)
+    serve(app, host='0.0.0.0', port=5000)
     
 
 
